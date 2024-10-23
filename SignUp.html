@@ -16,6 +16,13 @@
             color: #FF0000;
             display: none;
         }
+        .json-output {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -29,6 +36,7 @@
                 <li><a href="#">Products</a></li>
                 <li><a href="#">About Us</a></li>
                 <li><a href="#">Contact</a></li>
+                <li><a href="signup.html">Sign Up</a></li> <!-- Add Signup Page to Navbar -->
             </ul>
         </nav>
     </div>
@@ -37,7 +45,7 @@
 <!-- Signup Form Section -->
 <section class="container mt-5">
     <h2 class="text-center">Create Your Account</h2>
-    <form id="signupForm" class="mt-4" onsubmit="return validateForm()">
+    <form id="signupForm" class="mt-4" onsubmit="return handleSubmit()">
         <div class="mb-3">
             <label for="username" class="form-label">Username</label>
             <input type="text" class="form-control" id="username" placeholder="Enter your username" required>
@@ -60,6 +68,9 @@
         </div>
         <button type="submit" class="btn btn-primary">Sign Up</button>
     </form>
+    
+    <!-- JSON Output Section -->
+    <div id="jsonOutput" class="json-output"></div>
 </section>
 
 <!-- Footer Area -->
@@ -69,8 +80,32 @@
     </div>
 </footer>
 
-<!-- JavaScript for validation -->
+<!-- JavaScript for form validation and JSON creation -->
 <script>
+    function handleSubmit() {
+        let isValid = validateForm();
+        if (!isValid) return false;
+
+        // Get form values
+        const username = document.getElementById('username').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
+
+        // Create JSON object
+        const userData = {
+            username: username,
+            email: email,
+            password: password
+        };
+
+        // Display JSON on the page
+        const jsonOutput = document.getElementById('jsonOutput');
+        jsonOutput.textContent = JSON.stringify(userData, null, 4); // Format the JSON output
+        jsonOutput.style.display = 'block'; // Show the JSON output
+
+        return false; // Prevent form from submitting
+    }
+
     function validateForm() {
         let isValid = true;
 
